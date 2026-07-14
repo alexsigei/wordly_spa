@@ -10,3 +10,34 @@ const synonyms = document.getElementById("synonyms");
 const error = document.getElementById("error");
 const results = document.getElementById("results");
 const audioBtn = document.getElementById("audioBtn");
+
+
+let audioLink = "";
+
+form.addEventListener("submit", searchWord);
+
+function searchWord(event){
+
+    event.preventDefault();
+
+    const search = input.value.trim();
+
+    if (search===""){
+        showError("Please enter a word.");
+        return
+    }
+
+    fetchWord(search);
+}
+
+function fetchWord(){
+
+}
+
+function displayWord(){
+
+}
+
+function showError(){
+    
+}
