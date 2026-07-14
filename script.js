@@ -14,9 +14,9 @@ const audioBtn = document.getElementById("audioBtn");
 
 let audioLink = "";
 
-form.addEventListener("submit", searchWord);
+form.addEventListener( "submit", searchWord );
 
-function searchWord(event){
+function searchWord( event ){
 
     event.preventDefault();
 
@@ -30,14 +30,93 @@ function searchWord(event){
     fetchWord(search);
 }
 
-function fetchWord(){
+function fetchWord( wordSearch ){
+    fetch( `https://api.dictionaryapi.dev/api/v2/entries/en/${wordSearch}` )
 
+    .then( response => {
+        if (!response.ok){
+            throw new Error("Word not found");
+        }
+
+        return response.json();
+    })
+
+    .then(data => {
+        displayWord(data[0]);
+    })
+
+    .catch( err => {
+        showError(err.message);
+    });
 }
 
-function displayWord(){
+function displayWord(data){
 
-}
+    error.textContent = "";
 
-function showError(){
+    results.style.display = "block";
+
+    results.classList.add("highlight");
+
+    word.textContent = data.word;
+
+    phonetic.textContent = data.phonetic || "No pronunciation";
+
+    partSpeech.textContent = 
+    "Part of Speech: "+
+    (data.meanings[0].partOfSpeech || "Unavailbale");
+
+    definition.textContent=
+    "Definition: "+
+    (data.meanings[0].definitions[0].definition);
+
+    example.textContent=
+    "Example: "+
+    (data.meanings[0].definitions[0].example || "No example available");
+
+    const syns=data.meanings[0].synonyms;
+
+    if(syns.length>0){
+        synonyms.textContent="Synonyms: "+syns.join(", ");
+    }else{
+        synonyms.textContent="No synonyms available.";
+    }
+
+    audioLink="";
+
+    data.phonetics.forEach(item=>{
+
+        if(item.audio && audioLink===""){
+            audioLink=item.audio;
+        }
+
+    });
+
+    if(audioLink===""){
+        audioBtn.style.display="none";
+    }else{
+        audioBtn.style.display="inline-block";
+    }
+
     
+
+    audioBtn.addEventListener("click",function(){
+
+        if(audioLink!==""){
+
+            const audio=new Audio(audioLink);
+
+            audio.play();
+
+        }
+
+    });
+}
+
+function showError(message){
+
+    results.style.display="none";
+
+    error.textContent=message;
+
 }
