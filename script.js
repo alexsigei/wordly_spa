@@ -11,46 +11,45 @@ const error = document.getElementById("error");
 const results = document.getElementById("results");
 const audioBtn = document.getElementById("audioBtn");
 
-
 let audioLink = "";
 
-form.addEventListener( "submit", searchWord );
+form.addEventListener("submit", searchWord);
 
-function searchWord( event ){
+function searchWord(event) {
 
     event.preventDefault();
 
     const search = input.value.trim();
 
-    if (search===""){
+    if (search === "") {
         showError("Please enter a word.");
-        return
+        return;
     }
 
     fetchWord(search);
 }
 
-function fetchWord( wordSearch ){
-    fetch( `https://api.dictionaryapi.dev/api/v2/entries/en/${wordSearch}` )
+function fetchWord(wordSearch) {
+    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordSearch}`)
 
-    .then( response => {
-        if (!response.ok){
-            throw new Error("Word not found");
-        }
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Word not found");
+            }
 
-        return response.json();
-    })
+            return response.json();
+        })
 
-    .then(data => {
-        displayWord(data[0]);
-    })
+        .then(data => {
+            displayWord(data[0]);
+        })
 
-    .catch( err => {
-        showError(err.message);
-    });
+        .catch(err => {
+            showError(err.message);
+        });
 }
 
-function displayWord(data){
+function displayWord(data) {
 
     error.textContent = "";
 
@@ -62,49 +61,51 @@ function displayWord(data){
 
     phonetic.textContent = data.phonetic || "No pronunciation";
 
-    partSpeech.textContent = 
-    "Part of Speech: "+
-    (data.meanings[0].partOfSpeech || "Unavailbale");
+    partSpeech.textContent =
+        "Part of Speech: " +
+        (data.meanings[0].partOfSpeech || "Unavailbale");
 
-    definition.textContent=
-    "Definition: "+
-    (data.meanings[0].definitions[0].definition);
+    definition.textContent =
+        "Definition: " +
+        (data.meanings[0].definitions[0].definition);
 
-    example.textContent=
-    "Example: "+
-    (data.meanings[0].definitions[0].example || "No example available");
+    example.textContent =
+        "Example: " +
+        (data.meanings[0].definitions[0].example || "No example available");
 
-    const syns=data.meanings[0].synonyms;
+    const syns = data.meanings[0].synonyms;
 
-    if(syns.length>0){
-        synonyms.textContent="Synonyms: "+syns.join(", ");
-    }else{
-        synonyms.textContent="No synonyms available.";
+    if (syns.length > 0) {
+        synonyms.textContent = "Synonyms: " + syns.join(", ");
+    } else {
+        synonyms.textContent = "No synonyms available.";
     }
 
-    audioLink="";
+    audioLink = "";
 
-    data.phonetics.forEach(item=>{
+    data.phonetics.forEach(item => {
 
-        if(item.audio && audioLink===""){
-            audioLink=item.audio;
+        if (item.audio && audioLink === "") {
+            audioLink = item.audio;
         }
 
     });
 
-    if(audioLink===""){
-        audioBtn.style.display="none";
-    }else{
-        audioBtn.style.display="inline-block";
+    if (audioLink === "") {
+        audioBtn.style.display = "none";
+    } else {
+        audioBtn.style.display = "inline-block";
     }
 
+    // Removed old event listeners to prevent duplicates
+    const newAudioBtn = audioBtn.cloneNode(true);
+    audioBtn.parentNode.replaceChild(newAudioBtn, audioBtn);
     
+    newAudioBtn.addEventListener("click", function() {
 
-    audioBtn.addEventListener("click",function(){
+        if (audioLink !== "") {
 
-        if(audioLink!==""){
-
-            const audio=new Audio(audioLink);
+            const audio = new Audio(audioLink);
 
             audio.play();
 
@@ -113,10 +114,10 @@ function displayWord(data){
     });
 }
 
-function showError(message){
+function showError(message) {
 
-    results.style.display="none";
+    results.style.display = "none";
 
-    error.textContent=message;
+    error.textContent = message;
 
 }

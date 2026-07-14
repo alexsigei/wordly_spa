@@ -1,56 +1,320 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background:#f4f4f4;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f0f7f0 0%, #e8f0e8 100%);
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
 }
 
-.container{
-    width: 600px;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px rgba(0, 0, 0, .2);
+.container {
+    width: 100%;
+    max-width: 640px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 80, 0, 0.08), 0 2px 10px rgba(0, 80, 0, 0.04);
+    transition: all 0.3s ease;
 }
 
-h1{
-    text-align: center;
-}
-
-form{
+.header {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 28px;
 }
 
-input{
+.logo-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+h1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a3a2a;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #2d7d46, #4caf7a);
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
+
+form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
     flex: 1;
-    padding: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #f5faf5;
+    border: 2px solid #e0ebe0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
 }
 
-button{
-    padding: 10px 20px;
+.input-wrapper:focus-within {
+    border-color: #2d7d46;
+    box-shadow: 0 0 0 4px rgba(45, 125, 70, 0.1);
+    background: #ffffff;
+}
+
+.search-icon {
+    padding: 0 0 0 16px;
+    font-size: 16px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+input {
+    flex: 1;
+    padding: 14px 16px 14px 10px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    color: #1a3a2a;
+    outline: none;
+}
+
+input::placeholder {
+    color: #8aaa8a;
+    font-weight: 400;
+}
+
+button[type="submit"] {
+    padding: 14px 32px;
     cursor: pointer;
-    background: #0077cc;
+    background: linear-gradient(135deg, #2d7d46, #3ba35a);
     color: white;
     border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
 }
 
-button:hover{
-    background: #005fa3;
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #236a3a, #2d8f4e);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(45, 125, 70, 0.25);
 }
 
-#results{
-    margin-top: 20px;
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(45, 125, 70, 0.2);
+}
+
+#error {
+    color: #d32f2f;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    background: #ffebee;
+    border-radius: 8px;
+    border-left: 4px solid #d32f2f;
     display: none;
 }
 
-.highlight{
-    border-left: 6px solid green;
-    padding-left: 15px;
+#error:not(:empty) {
+    display: block;
 }
 
-#error{
-    color: red;
-    margin-top: 10px;
+#results {
+    margin-top: 28px;
+    display: none;
+    padding: 24px 24px 28px;
+    background: #f8fbf8;
+    border-radius: 16px;
+    border: 1px solid #e8f0e8;
+    transition: all 0.3s ease;
+}
+
+#results.highlight {
+    border-left: 5px solid #2d7d46;
+    padding-left: 22px;
+}
+
+#word {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a3a2a;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+}
+
+#phonetic {
+    color: #5a8a5a;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0ebe0;
+}
+
+#partSpeech {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d7d46;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    background: #e8f5e8;
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+#definition {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #2a3a2a;
+    margin-bottom: 14px;
+    padding: 14px 18px;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e8f0e8;
+}
+
+#definition::before {
+    content: '- ';
+    font-size: 16px;
+}
+
+#example {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a6a4a;
+    font-style: italic;
+    margin-bottom: 16px;
+    padding: 12px 18px;
+    background: #f0f7f0;
+    border-radius: 10px;
+}
+
+#example::before {
+    content: '- ';
+    font-style: normal;
+}
+
+#synonyms {
+    font-size: 15px;
+    color: #2a4a2a;
+    margin-bottom: 20px;
+    padding: 12px 18px;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e8f0e8;
+}
+
+#synonyms::before {
+    content: '- ';
+    font-weight: 500;
+}
+
+#audioBtn {
+    padding: 12px 28px;
+    cursor: pointer;
+    background: #ffffff;
+    color: #2d7d46;
+    border: 2px solid #2d7d46;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+#audioBtn:hover {
+    background: #2d7d46;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45, 125, 70, 0.2);
+}
+
+#audioBtn:active {
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 24px 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+    }
+
+    .input-wrapper {
+        border-radius: 10px;
+    }
+
+    #results {
+        padding: 18px 16px 20px;
+    }
+
+    #word {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        padding: 16px 14px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    #results {
+        padding: 14px 12px 16px;
+    }
+
+    #definition,
+    #example,
+    #synonyms {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
 }
