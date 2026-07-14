@@ -39,3 +39,18 @@ button{
 button:hover{
     background: #005fa3;
 }
+
+#results{
+    margin-top: 20px;
+    display: none;
+}
+
+.highlight{
+    border-left: 6px solid green;
+    padding-left: 15px;
+}
+
+#error{
+    color: red;
+    margin-top: 10px;
+}
