@@ -96,22 +96,13 @@ function displayWord(data) {
     } else {
         audioBtn.style.display = "inline-block";
     }
-
-    // Removed old event listeners to prevent duplicates
-    const newAudioBtn = audioBtn.cloneNode(true);
-    audioBtn.parentNode.replaceChild(newAudioBtn, audioBtn);
     
-    newAudioBtn.addEventListener("click", function() {
-
+    audioBtn.onclick = function () {
         if (audioLink !== "") {
-
             const audio = new Audio(audioLink);
-
             audio.play();
-
         }
-
-    });
+    }
 }
 
 function showError(message) {
